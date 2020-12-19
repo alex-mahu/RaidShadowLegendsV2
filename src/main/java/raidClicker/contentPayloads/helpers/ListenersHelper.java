@@ -25,6 +25,4 @@ public final class ListenersHelper {
     private static boolean canResetTimer(Timer timer) {
         return timer.getActionListeners().length > 0;
     }
-
-
 }
