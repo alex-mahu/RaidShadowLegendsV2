@@ -16,8 +16,6 @@ import static raidClicker.contentPayloads.helpers.ListenersHelper.*;
 
 public final class StartStopListener implements ActionListener {
 
-    private Integer clickInSeconds;
-    private Integer runningTime;
     private JTextField clickInSecondsJTF;
     private JTextField runningTimeJTF;
     private final MouseActions mouseActions;
