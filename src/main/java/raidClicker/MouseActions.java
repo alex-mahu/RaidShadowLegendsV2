@@ -19,7 +19,15 @@ public final class MouseActions {
         }
     }
 
-    public MouseActions getMouseLocation() {
+    public void setLocation(Point mouseLocationFromUi) {
+        mouseLocation = mouseLocationFromUi;
+    }
+
+    public Point getMouseLocation() {
+        return mouseLocation;
+    }
+
+    public MouseActions takeMouseLocationFromScreen() {
         mouseLocation = getPointerInfo().getLocation();
         return this;
     }

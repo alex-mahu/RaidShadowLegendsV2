@@ -18,15 +18,15 @@ import static raidClicker.contentPayloads.helpers.StringHelpers.tryParseOrDefaul
 
 public final class ClickingListener implements ActionListener, ResettableTimerListener {
 
+    private final StartStopListener startStopListener;
+    private final JTextField clickInSecondsJTF;
+    private final JTextField runningTimeJTF;
     int secondsPassed = 0;
     String textWhenRunningIndefinitely;
     private Integer runningTime;
     private Timer clickingTimer;
     private Integer clickInSeconds;
     private MouseActions mouseActions;
-    private final StartStopListener startStopListener;
-    private final JTextField clickInSecondsJTF;
-    private final JTextField runningTimeJTF;
 
     public ClickingListener(
             Timer clickingTimer,
