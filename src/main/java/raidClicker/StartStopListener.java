@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static java.lang.String.format;
 import static raidClicker.contentPayloads.helpers.ListenersHelper.*;
 
 public final class StartStopListener implements ActionListener {

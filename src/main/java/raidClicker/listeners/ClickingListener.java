@@ -1,6 +1,7 @@
 package raidClicker.listeners;
 
 
+import raidClicker.AudioPlayer;
 import raidClicker.MouseActions;
 import raidClicker.StartStopListener;
 import raidClicker.contentPayloads.ComponentManager;
@@ -56,6 +57,7 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
                 startStopListener.changeRunningStatus();
                 secondsPassed = 0;
                 clickingTimer.stop();
+                new AudioPlayer().playFile("timerUpSound.au");
                 return;
             } else {
                 ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText(format("%d seconds until stop", runningTime - secondsPassed)));
