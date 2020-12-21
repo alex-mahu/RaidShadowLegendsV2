@@ -1,25 +1,28 @@
 package raidClicker;
 
 import raidClicker.contentPayloads.ComponentManager;
-import raidClicker.contentPayloads.PayloadStartStopTextToChange;
 import raidClicker.contentPayloads.PayloadSecondsToClickText;
 import raidClicker.contentPayloads.PayloadSecondsToStopText;
+import raidClicker.contentPayloads.PayloadStartStopTextToChange;
+import raidClicker.exceptions.LocationNotParsable;
 import raidClicker.listeners.ClickingListener;
 import raidClicker.listeners.MouseLocationListener;
+import raidClicker.uniqueComponentHandlers.LocationHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static raidClicker.contentPayloads.helpers.ListenersHelper.*;
+import static raidClicker.contentPayloads.helpers.ListenersHelper.addOneListener;
+import static raidClicker.contentPayloads.helpers.ListenersHelper.resetListenerForTimer;
 
 public final class StartStopListener implements ActionListener {
 
-    private JTextField clickInSecondsJTF;
-    private JTextField runningTimeJTF;
     private final MouseActions mouseActions;
     private final Timer clickingTimer;
     private final Timer mouseLocationTimer;
+    private JTextField clickInSecondsJTF;
+    private JTextField runningTimeJTF;
     private Boolean isRunning = false;
 
     public StartStopListener(JTextField clickInSeconds, JTextField runningTime) {
@@ -52,8 +55,14 @@ public final class StartStopListener implements ActionListener {
     }
 
     private void getMousePosition() {
-        addOneListener(mouseLocationTimer, new MouseLocationListener(mouseActions, mouseLocationTimer, clickingTimer));
-        mouseLocationTimer.start();
+        try {
+            mouseActions.setLocation(LocationHandler.getLocation());
+            mouseActions.doubleClick();
+            clickingTimer.start();
+        } catch (LocationNotParsable ex) {
+            addOneListener(mouseLocationTimer, new MouseLocationListener(mouseActions, mouseLocationTimer, clickingTimer));
+            mouseLocationTimer.start();
+        }
     }
 
     public void changeRunningStatus() {

@@ -18,7 +18,7 @@ public final class ListenersHelper {
 
     public static void resetListenerForTimer(Timer timer) {
         if (canResetTimer(timer)) {
-            ((ResettableTimerListener)timer.getActionListeners()[0]).resetTimer();
+            ((ResettableTimerListener) timer.getActionListeners()[0]).resetTimer();
         }
     }
 
