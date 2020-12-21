@@ -18,9 +18,7 @@ public final class AudioPlayer {
             try {
                 InputStream audio = AudioPlayer.class.getResourceAsStream(MUSHROOM_SOUND_FILENAME);
                 mushroomSound = new AudioStream(audio);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
         }
