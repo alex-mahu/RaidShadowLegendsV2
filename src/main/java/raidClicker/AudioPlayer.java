@@ -1,26 +1,34 @@
 package raidClicker;
 
+import static java.util.Objects.isNull;
+import static sun.audio.AudioPlayer.player;
+
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+
 import sun.audio.AudioStream;
 
-public class AudioPlayer {
+public final class AudioPlayer {
+    private static AudioStream mushroomSound;
+    private static final String MUSHROOM_SOUND_FILENAME = "mushroomSound.au";
 
-    public void playFile(String filename){
-        AudioStream audioStream = getAudioFile(filename);
-        sun.audio.AudioPlayer.player.start(audioStream);
+    private static InputStream getMushroomSound(){
+        if (isNull(mushroomSound)){
+            try {
+                InputStream audio = AudioPlayer.class.getResourceAsStream(MUSHROOM_SOUND_FILENAME);
+                mushroomSound = new AudioStream(audio);
+            }
+            catch (IOException e)
+            {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return  mushroomSound;
     }
 
-    private AudioStream getAudioFile(String filename)
-    {
-        try {
-            // the sound file must be in the same directory as this class file.
-            InputStream inputStream = getClass().getResourceAsStream(filename);
-            return new AudioStream(inputStream);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Failed to run audio file \n" + e);
-        }
-        return null;
+    public static void playMushroomSound(){
+        player.start(getMushroomSound());
     }
+
 }

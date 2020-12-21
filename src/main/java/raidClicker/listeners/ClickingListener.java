@@ -57,7 +57,7 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
                 startStopListener.changeRunningStatus();
                 secondsPassed = 0;
                 clickingTimer.stop();
-                new AudioPlayer().playFile("timerUpSound.au");
+                AudioPlayer.playMushroomSound();
                 return;
             } else {
                 ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText(format("%d seconds until stop", runningTime - secondsPassed)));
