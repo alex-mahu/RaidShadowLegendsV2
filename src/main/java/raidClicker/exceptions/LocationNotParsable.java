@@ -1,6 +1,6 @@
 package raidClicker.exceptions;
 
-public class LocationNotParsable extends RuntimeException {
+public final class LocationNotParsable extends RuntimeException {
     public LocationNotParsable(Throwable cause) {
         super(cause);
     }
