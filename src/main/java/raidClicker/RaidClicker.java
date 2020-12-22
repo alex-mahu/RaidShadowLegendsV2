@@ -1,13 +1,12 @@
 package raidClicker;
 
+import raidClicker.components.NoComponentRequired;
 import raidClicker.components.LocationComponent;
-import raidClicker.contentPayloads.ComponentManager;
-import raidClicker.contentPayloads.PayloadSecondsToClickText;
-import raidClicker.contentPayloads.PayloadSecondsToStopText;
-import raidClicker.contentPayloads.PayloadStartStopTextToChange;
+import raidClicker.contentPayloads.*;
 import raidClicker.contentPayloads.handlers.ButtonStartStopTextChanger;
 import raidClicker.contentPayloads.handlers.LabelSecondsToClickTextChanger;
 import raidClicker.contentPayloads.handlers.LabelStopTextChanger;
+import raidClicker.contentPayloads.handlers.MusicHandler;
 import raidClicker.uniqueComponentHandlers.LocationHandler;
 
 import javax.swing.*;
@@ -80,5 +79,6 @@ public class RaidClicker {
         ComponentManager.registerComponentHandler(PayloadStartStopTextToChange.class, new ButtonStartStopTextChanger(startStop));
         ComponentManager.registerComponentHandler(PayloadSecondsToClickText.class, new LabelSecondsToClickTextChanger(secondsToClickLabel));
         ComponentManager.registerComponentHandler(PayloadSecondsToStopText.class, new LabelStopTextChanger(remainingTimeInSecondsLabel));
+        ComponentManager.registerComponentHandler(PayloadMusic.class, new MusicHandler(NoComponentRequired.INSTANCE));
     }
 }
