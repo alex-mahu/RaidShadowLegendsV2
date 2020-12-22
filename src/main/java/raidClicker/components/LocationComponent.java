@@ -12,7 +12,9 @@ public final class LocationComponent extends JPanel {
 
     public LocationComponent() {
         xLocation = new JTextField();
+        xLocation.setHorizontalAlignment(JTextField.CENTER);
         yLocation = new JTextField();
+        yLocation.setHorizontalAlignment(JTextField.CENTER);
         this.setLayout(new GridLayout(1, 2));
         this.add(createPanelForLocationPart("X", xLocation, Color.BLUE));
         this.add(createPanelForLocationPart("Y", yLocation, Color.RED));

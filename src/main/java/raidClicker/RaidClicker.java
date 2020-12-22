@@ -10,7 +10,11 @@ import raidClicker.contentPayloads.handlers.MusicHandler;
 import raidClicker.uniqueComponentHandlers.LocationHandler;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
+
+import static raidClicker.constants.ButtonConstants.COOL_GREEN;
+import static raidClicker.constants.ButtonConstants.START;
 
 public class RaidClicker {
 
@@ -23,12 +27,12 @@ public class RaidClicker {
     LocationComponent locationComponent;
 
     public RaidClicker() {
-        frame = new JFrame("Click the shit of it!");
-        final GridLayout layout = new GridLayout(0, 1);
-        layout.setHgap(5);
-        layout.setVgap(5);
-        frame.setLayout(layout);
-        startStop = new JButton("START");
+        frame = new JFrame("Clicker");
+        final GridLayout frameLayout = new GridLayout(0, 1);
+        frame.setLayout(frameLayout);
+        startStop = new JButton(START);
+        startStop.setFocusPainted(false);
+        startStop.setBackground(COOL_GREEN);
         frame.add(startStop, BorderLayout.NORTH);
 
         secondsToWaitUntilClick = new JTextField();
@@ -38,37 +42,41 @@ public class RaidClicker {
         startStop.addActionListener(new StartStopListener(secondsToWaitUntilClick, secondsToRun));
 
         JPanel centerPanel = new JPanel();
-        final GridLayout inputLayouts = new GridLayout(3, 2);
+        final GridLayout inputLayouts = new GridLayout(0, 2);
         locationComponent = new LocationComponent();
         frame.add(locationComponent);
         LocationHandler.loadComponent(locationComponent);
 
         centerPanel.setLayout(inputLayouts);
-        centerPanel.add(new JLabel("SECONDS FOR CLICK:"), BorderLayout.EAST);
+        centerPanel.add(new JLabel("Click (sec):"), BorderLayout.EAST);
         centerPanel.add(secondsToWaitUntilClick, BorderLayout.WEST);
 
         centerPanel.setLayout(inputLayouts);
-        centerPanel.add(new JLabel("DURATION IN SEC:"), BorderLayout.EAST);
+        centerPanel.add(new JLabel("Duration (sec):"), BorderLayout.EAST);
         centerPanel.add(secondsToRun, BorderLayout.WEST);
+        centerPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
         frame.add(centerPanel, BorderLayout.CENTER);
 
         JPanel runInformationPanel = new JPanel();
-        final GridLayout informationLayouts = new GridLayout(2, 1);
+        final GridLayout informationLayouts = new GridLayout(0, 1);
         runInformationPanel.setLayout(informationLayouts);
         secondsToClickLabel = new JLabel("OFF", SwingConstants.CENTER);
         remainingTimeInSecondsLabel = new JLabel("Not started.", SwingConstants.CENTER);
         runInformationPanel.add(secondsToClickLabel);
         runInformationPanel.add(remainingTimeInSecondsLabel);
+        runInformationPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
         frame.add(runInformationPanel, BorderLayout.SOUTH);
-        frame.setSize(300, 250);
+
+        frame.pack();
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initializeUiHandlers();
 
-        new Timer(1, e -> ComponentManager.checkAndConsumePayloads()).start();
+        new Timer(25, e -> ComponentManager.checkAndConsumePayloads()).start();
     }
 
     public static void main(String[] args) {

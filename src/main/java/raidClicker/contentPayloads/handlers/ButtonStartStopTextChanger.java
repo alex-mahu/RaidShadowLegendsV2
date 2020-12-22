@@ -3,6 +3,9 @@ package raidClicker.contentPayloads.handlers;
 import raidClicker.contentPayloads.PayloadStartStopTextToChange;
 
 import javax.swing.*;
+import java.awt.*;
+
+import static raidClicker.constants.ButtonConstants.*;
 
 public final class ButtonStartStopTextChanger extends ComponentHandler<JButton, PayloadStartStopTextToChange> {
 
@@ -12,8 +15,16 @@ public final class ButtonStartStopTextChanger extends ComponentHandler<JButton, 
 
     @Override
     public void consumePayload(PayloadStartStopTextToChange payload) {
-        System.out.println("[ButtonStartStopTextChanger] " + payload.getButtonText());
         component.setText(payload.getButtonText());
+        if (payload.getButtonText().equals(START)) {
+            component.setBackground(COOL_GREEN);
+            return;
+        }
+
+        if (payload.getButtonText().equals(STOP)) {
+            component.setBackground(COOL_ORANGE);
+            return;
+        }
     }
 
 

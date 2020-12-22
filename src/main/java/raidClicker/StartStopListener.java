@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static raidClicker.constants.ButtonConstants.START;
+import static raidClicker.constants.ButtonConstants.STOP;
 import static raidClicker.contentPayloads.helpers.ListenersHelper.addOneListener;
 import static raidClicker.contentPayloads.helpers.ListenersHelper.resetListenerForTimer;
 
@@ -43,11 +45,11 @@ public final class StartStopListener implements ActionListener {
         if (!isRunning) {
             getMousePosition();
             isRunning = true;
-            ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange("STOP"));
+            ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(STOP));
             addOneListener(clickingTimer, new ClickingListener(clickingTimer, mouseActions, this, clickInSecondsJTF, runningTimeJTF));
         } else {
             isRunning = false;
-            ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange("START"));
+            ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(START));
             ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText("Run stopped by user."));
             ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText("STOPPED!"));
             clickingTimer.stop();

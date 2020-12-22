@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
+import static raidClicker.constants.ButtonConstants.START;
 import static raidClicker.contentPayloads.handlers.MusicHandler.Songs.MUSHROOM;
 import static raidClicker.contentPayloads.helpers.StringHelpers.tryParseOrDefault;
 
@@ -48,7 +49,7 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
         } else {
             if (secondsPassed == runningTime) {
                 ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText("Finished Running time"));
-                ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange("START"));
+                ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(START));
                 ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText("Click START to run."));
                 startStopListener.changeRunningStatus();
                 secondsPassed = 0;
