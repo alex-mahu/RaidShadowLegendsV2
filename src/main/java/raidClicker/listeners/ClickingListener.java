@@ -1,13 +1,8 @@
 package raidClicker.listeners;
 
-
-import raidClicker.AudioPlayer;
 import raidClicker.MouseActions;
 import raidClicker.StartStopListener;
-import raidClicker.contentPayloads.ComponentManager;
-import raidClicker.contentPayloads.PayloadSecondsToClickText;
-import raidClicker.contentPayloads.PayloadSecondsToStopText;
-import raidClicker.contentPayloads.PayloadStartStopTextToChange;
+import raidClicker.contentPayloads.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
+import static raidClicker.contentPayloads.handlers.MusicHandler.Songs.MUSHROOM;
 import static raidClicker.contentPayloads.helpers.StringHelpers.tryParseOrDefault;
 
 public final class ClickingListener implements ActionListener, ResettableTimerListener {
@@ -25,9 +21,9 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
     int secondsPassed = 0;
     String textWhenRunningIndefinitely;
     private Integer runningTime;
-    private Timer clickingTimer;
+    private final Timer clickingTimer;
     private Integer clickInSeconds;
-    private MouseActions mouseActions;
+    private final MouseActions mouseActions;
 
     public ClickingListener(
             Timer clickingTimer,
@@ -57,7 +53,7 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
                 startStopListener.changeRunningStatus();
                 secondsPassed = 0;
                 clickingTimer.stop();
-                AudioPlayer.playMushroomSound();
+                ComponentManager.addPayloadToConsume(new PayloadMusic(MUSHROOM));
                 return;
             } else {
                 ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText(format("%d seconds until stop", runningTime - secondsPassed)));
