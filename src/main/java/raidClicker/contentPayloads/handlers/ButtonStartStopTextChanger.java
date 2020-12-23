@@ -18,11 +18,13 @@ public final class ButtonStartStopTextChanger extends ComponentHandler<JButton, 
         component.setText(payload.getButtonText());
         if (payload.getButtonText().equals(START)) {
             component.setBackground(COOL_GREEN);
+            component.revalidate();
             return;
         }
 
         if (payload.getButtonText().equals(STOP)) {
             component.setBackground(COOL_ORANGE);
+            component.revalidate();
             return;
         }
     }

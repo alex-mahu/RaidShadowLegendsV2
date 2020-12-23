@@ -23,8 +23,8 @@ public final class StartStopListener implements ActionListener {
     private final MouseActions mouseActions;
     private final Timer clickingTimer;
     private final Timer mouseLocationTimer;
-    private JTextField clickInSecondsJTF;
-    private JTextField runningTimeJTF;
+    private final JTextField clickInSecondsJTF;
+    private final JTextField runningTimeJTF;
     private Boolean isRunning = false;
 
     public StartStopListener(JTextField clickInSeconds, JTextField runningTime) {

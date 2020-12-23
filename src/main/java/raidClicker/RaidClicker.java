@@ -32,6 +32,8 @@ public class RaidClicker {
         frame.setLayout(frameLayout);
         startStop = new JButton(START);
         startStop.setFocusPainted(false);
+        startStop.setOpaque(true);
+        startStop.setBorderPainted(false);
         startStop.setBackground(COOL_GREEN);
         frame.add(startStop, BorderLayout.NORTH);
 
