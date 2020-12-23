@@ -51,4 +51,5 @@ public final class MusicHandler extends ComponentHandler<NoComponentRequired, Pa
             this.fileName = fileName;
         }
     }
+
 }
