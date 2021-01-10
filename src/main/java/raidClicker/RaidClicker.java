@@ -1,12 +1,8 @@
 package raidClicker;
 
-import raidClicker.components.NoComponentRequired;
-import raidClicker.components.LocationComponent;
+import raidClicker.components.*;
 import raidClicker.contentPayloads.*;
-import raidClicker.contentPayloads.handlers.ButtonStartStopTextChanger;
-import raidClicker.contentPayloads.handlers.LabelSecondsToClickTextChanger;
-import raidClicker.contentPayloads.handlers.LabelStopTextChanger;
-import raidClicker.contentPayloads.handlers.MusicHandler;
+import raidClicker.contentPayloads.handlers.*;
 import raidClicker.uniqueComponentHandlers.LocationHandler;
 
 import javax.swing.*;
@@ -15,16 +11,19 @@ import java.awt.*;
 
 import static raidClicker.constants.ButtonConstants.COOL_GREEN;
 import static raidClicker.constants.ButtonConstants.START;
+import static raidClicker.helpers.SettingsHelper.createSettingsFileIfNotExists;
+import static raidClicker.helpers.SettingsHelper.loadSettingsFromFile;
 
 public class RaidClicker {
 
     JFrame frame;
     JButton startStop;
-    JTextField secondsToWaitUntilClick;
-    JTextField secondsToRun;
+    SecondsToWaitForClick secondsToWaitUntilClick;
+    SecondsToRun secondsToRun;
     JLabel secondsToClickLabel;
     JLabel remainingTimeInSecondsLabel;
     LocationComponent locationComponent;
+    LoadSaveSettingsComponent loadSaveSettingsComponent;
 
     public RaidClicker() {
         frame = new JFrame("Clicker");
@@ -37,9 +36,9 @@ public class RaidClicker {
         startStop.setBackground(COOL_GREEN);
         frame.add(startStop, BorderLayout.NORTH);
 
-        secondsToWaitUntilClick = new JTextField();
+        secondsToWaitUntilClick = new SecondsToWaitForClick();
         secondsToWaitUntilClick.setHorizontalAlignment(JTextField.CENTER);
-        secondsToRun = new JTextField();
+        secondsToRun = new SecondsToRun();
         secondsToRun.setHorizontalAlignment(JTextField.CENTER);
         startStop.addActionListener(new StartStopListener(secondsToWaitUntilClick, secondsToRun));
 
@@ -70,6 +69,8 @@ public class RaidClicker {
         runInformationPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
         frame.add(runInformationPanel, BorderLayout.SOUTH);
+        loadSaveSettingsComponent = new LoadSaveSettingsComponent();
+        frame.add(loadSaveSettingsComponent, BorderLayout.SOUTH);
 
         frame.pack();
         frame.setResizable(false);
@@ -77,6 +78,9 @@ public class RaidClicker {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initializeUiHandlers();
+
+        createSettingsFileIfNotExists();
+        loadSettingsFromFile();
 
         new Timer(25, e -> ComponentManager.checkAndConsumePayloads()).start();
     }
@@ -87,8 +91,13 @@ public class RaidClicker {
 
     private void initializeUiHandlers() {
         ComponentManager.registerComponentHandler(PayloadStartStopTextToChange.class, new ButtonStartStopTextChanger(startStop));
-        ComponentManager.registerComponentHandler(PayloadSecondsToClickText.class, new LabelSecondsToClickTextChanger(secondsToClickLabel));
-        ComponentManager.registerComponentHandler(PayloadSecondsToStopText.class, new LabelStopTextChanger(remainingTimeInSecondsLabel));
+        ComponentManager.registerComponentHandler(PayloadSecondsToClickLabel.class, new LabelSecondsToClickTextChanger(secondsToClickLabel));
+        ComponentManager.registerComponentHandler(PayloadSecondsToRunLabel.class, new LabelStopTextChanger(remainingTimeInSecondsLabel));
         ComponentManager.registerComponentHandler(PayloadMusic.class, new MusicHandler(NoComponentRequired.INSTANCE));
+        ComponentManager.registerComponentHandler(PayloadUpdateUiSettings.class, new SettingsToUiChanger(loadSaveSettingsComponent));
+        ComponentManager.registerComponentHandler(PayloadLocation.class, new LocationChanger(locationComponent));
+        ComponentManager.registerComponentHandler(PayloadSecondsToClickTextBox.class, new SecondsToClickChanger(secondsToWaitUntilClick));
+        ComponentManager.registerComponentHandler(PayloadSecondsToRunTextBox.class, new SecondsToRunChanger(secondsToRun));
+        ComponentManager.registerComponentHandler(PayloadUpdateSettings.class, new CopySettingsToStaticObject(new SettingsWrapperComponent(secondsToWaitUntilClick, secondsToRun, locationComponent)));
     }
 }

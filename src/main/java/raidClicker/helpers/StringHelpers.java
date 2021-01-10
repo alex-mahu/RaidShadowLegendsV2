@@ -1,4 +1,4 @@
-package raidClicker.contentPayloads.helpers;
+package raidClicker.helpers;
 
 public final class StringHelpers {
 

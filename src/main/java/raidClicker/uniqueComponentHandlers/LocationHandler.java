@@ -16,7 +16,7 @@ public final class LocationHandler {
     }
 
     public static Point getLocation() {
-        return locationComponent.getMouseLocation();
+        return locationComponent.getSavedMouseLocation();
     }
 
     public static void setLocation(Point mouseLocation) {

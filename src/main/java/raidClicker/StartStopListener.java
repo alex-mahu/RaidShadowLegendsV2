@@ -1,8 +1,8 @@
 package raidClicker;
 
 import raidClicker.contentPayloads.ComponentManager;
-import raidClicker.contentPayloads.PayloadSecondsToClickText;
-import raidClicker.contentPayloads.PayloadSecondsToStopText;
+import raidClicker.contentPayloads.PayloadSecondsToClickLabel;
+import raidClicker.contentPayloads.PayloadSecondsToRunLabel;
 import raidClicker.contentPayloads.PayloadStartStopTextToChange;
 import raidClicker.exceptions.LocationNotParsable;
 import raidClicker.listeners.ClickingListener;
@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
 
 import static raidClicker.constants.ButtonConstants.START;
 import static raidClicker.constants.ButtonConstants.STOP;
-import static raidClicker.contentPayloads.helpers.ListenersHelper.addOneListener;
-import static raidClicker.contentPayloads.helpers.ListenersHelper.resetListenerForTimer;
+import static raidClicker.helpers.ListenersHelper.addOneListener;
+import static raidClicker.helpers.ListenersHelper.resetListenerForTimer;
 
 public final class StartStopListener implements ActionListener {
 
@@ -50,8 +50,8 @@ public final class StartStopListener implements ActionListener {
         } else {
             isRunning = false;
             ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(START));
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText("Run stopped by user."));
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText("STOPPED!"));
+            ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel("Run stopped by user."));
+            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel("STOPPED!"));
             clickingTimer.stop();
         }
     }
