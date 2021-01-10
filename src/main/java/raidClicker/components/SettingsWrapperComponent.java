@@ -1,10 +1,13 @@
 package raidClicker.components;
 
+import raidClicker.exceptions.LocationNotParsable;
+
 import javax.swing.*;
 
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static raidClicker.helpers.SettingsHelper.SETTINGS;
+import static raidClicker.models.SettingsModel.DEFAULT_SETTINGS;
 
 public final class SettingsWrapperComponent extends JComponent {
     private final SecondsToWaitForClick secondsToWaitForClick;
@@ -18,10 +21,14 @@ public final class SettingsWrapperComponent extends JComponent {
     }
 
     public void updateSettings() {
-        SETTINGS.setLocation(locationComponent.getSavedMouseLocation());
+        try {
+            SETTINGS.setLocation(locationComponent.getSavedMouseLocation());
+        } catch (LocationNotParsable ex) {
+            SETTINGS.setLocation(DEFAULT_SETTINGS.getLocation());
+        }
         final String secondsToWaitForClickText = secondsToWaitForClick.getText();
-        SETTINGS.setTimeToClick(isNullOrEmpty(secondsToWaitForClickText) ? null : secondsToWaitForClickText);
+        SETTINGS.setTimeToClick(isNullOrEmpty(secondsToWaitForClickText) ? DEFAULT_SETTINGS.getTimeToClick() : secondsToWaitForClickText);
         final String secondsToRunText = secondsToRun.getText();
-        SETTINGS.setTimeToRun(isNullOrEmpty(secondsToRunText) ? null : secondsToRunText);
+        SETTINGS.setTimeToRun(isNullOrEmpty(secondsToRunText) ? DEFAULT_SETTINGS.getTimeToRun() : secondsToRunText);
     }
 }
