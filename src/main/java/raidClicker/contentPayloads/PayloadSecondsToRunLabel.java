@@ -1,9 +1,9 @@
 package raidClicker.contentPayloads;
 
-public final class PayloadSecondsToStopText implements IPayloadInformation {
+public final class PayloadSecondsToRunLabel implements IPayloadInformation {
     private final String labelText;
 
-    public PayloadSecondsToStopText(String labelText) {
+    public PayloadSecondsToRunLabel(String labelText) {
         this.labelText = labelText;
     }
 

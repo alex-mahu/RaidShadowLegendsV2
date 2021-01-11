@@ -12,7 +12,7 @@ import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static raidClicker.constants.ButtonConstants.START;
 import static raidClicker.contentPayloads.handlers.MusicHandler.Songs.MUSHROOM;
-import static raidClicker.contentPayloads.helpers.StringHelpers.tryParseOrDefault;
+import static raidClicker.helpers.StringHelpers.tryParseOrDefault;
 
 public final class ClickingListener implements ActionListener, ResettableTimerListener {
 
@@ -45,29 +45,29 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
         secondsPassed++;
         if (isNull(runningTime) || isNull(textWhenRunningIndefinitely)) {
             textWhenRunningIndefinitely = "Running indefinitely.";
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText(textWhenRunningIndefinitely));
+            ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel(textWhenRunningIndefinitely));
         } else {
             if (secondsPassed == runningTime) {
-                ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText("Finished Running time"));
+                ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel("Finished Running time"));
                 ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(START));
-                ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText("Click START to run."));
+                ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel("Click START to run."));
                 startStopListener.changeRunningStatus();
                 secondsPassed = 0;
                 clickingTimer.stop();
                 ComponentManager.addPayloadToConsume(new PayloadMusic(MUSHROOM));
                 return;
             } else {
-                ComponentManager.addPayloadToConsume(new PayloadSecondsToStopText(format("%d seconds until stop", runningTime - secondsPassed)));
+                ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel(format("%d seconds until stop", runningTime - secondsPassed)));
             }
         }
 
         int secondsToClick = (secondsPassed % clickInSeconds);
 
         if (secondsToClick == 0) {
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText(">>>CLICKED<<<"));
+            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(">>>CLICKED<<<"));
             mouseActions.doubleClick();
         } else {
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText(format("Next click: %d sec", (clickInSeconds - secondsToClick))));
+            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(format("Next click: %d sec", (clickInSeconds - secondsToClick))));
         }
     }
 

@@ -36,7 +36,7 @@ public final class LocationComponent extends JPanel {
         return label;
     }
 
-    public Point getMouseLocation() {
+    public Point getSavedMouseLocation() {
         return new Point(parseLocationPart(xLocation), parseLocationPart(yLocation));
     }
 

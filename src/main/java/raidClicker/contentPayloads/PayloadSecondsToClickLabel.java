@@ -1,9 +1,9 @@
 package raidClicker.contentPayloads;
 
-public final class PayloadSecondsToClickText implements IPayloadInformation {
+public final class PayloadSecondsToClickLabel implements IPayloadInformation {
     private final String labelText;
 
-    public PayloadSecondsToClickText(String labelText) {
+    public PayloadSecondsToClickLabel(String labelText) {
         this.labelText = labelText;
     }
 

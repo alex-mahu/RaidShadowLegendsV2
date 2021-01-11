@@ -2,7 +2,7 @@ package raidClicker.listeners;
 
 import raidClicker.MouseActions;
 import raidClicker.contentPayloads.ComponentManager;
-import raidClicker.contentPayloads.PayloadSecondsToClickText;
+import raidClicker.contentPayloads.PayloadSecondsToClickLabel;
 import raidClicker.uniqueComponentHandlers.LocationHandler;
 
 import javax.swing.*;
@@ -27,11 +27,11 @@ public final class MouseLocationListener implements ActionListener, ResettableTi
     @Override
     public void actionPerformed(ActionEvent e) {
         seconds++;
-        ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText(format("%d sec > ML", 5 - seconds)));
+        ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(format("%d sec > ML", 5 - seconds)));
         if (seconds == 5) {
             mouseActions.takeMouseLocationFromScreen();
             LocationHandler.setLocation(mouseActions.getMouseLocation());
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickText("Took mouse location"));
+            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel("Took mouse location"));
             mouseLocationTimer.stop();
             mouseActions.doubleClick();
             clickingTimer.start();
