@@ -25,11 +25,13 @@ public final class StartStopListener implements ActionListener {
     private final Timer mouseLocationTimer;
     private final JTextField clickInSecondsJTF;
     private final JTextField runningTimeJTF;
+    private final JTextField numberOfRuns;
     private Boolean isRunning = false;
 
-    public StartStopListener(JTextField clickInSeconds, JTextField runningTime) {
+    public StartStopListener(JTextField clickInSeconds, JTextField runningTime, JTextField numberOfRuns) {
         this.clickInSecondsJTF = clickInSeconds;
         this.runningTimeJTF = runningTime;
+        this.numberOfRuns = numberOfRuns;
         mouseActions = new MouseActions();
         clickingTimer = new Timer(1000, null);
         mouseLocationTimer = new Timer(1000, null);
@@ -43,6 +45,7 @@ public final class StartStopListener implements ActionListener {
         resetListenerForTimer(clickingTimer);
         System.out.println("[StartStopListener] isRunning = " + isRunning);
         if (!isRunning) {
+            ApplicationStatus.setNumberOfRuns(numberOfRuns.getText());
             getMousePosition();
             isRunning = true;
             ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(STOP));
@@ -59,7 +62,7 @@ public final class StartStopListener implements ActionListener {
     private void getMousePosition() {
         try {
             mouseActions.setLocation(LocationHandler.getLocation());
-            mouseActions.doubleClick();
+            mouseActions.click();
             clickingTimer.start();
         } catch (LocationNotParsable ex) {
             addOneListener(mouseLocationTimer, new MouseLocationListener(mouseActions, mouseLocationTimer, clickingTimer));

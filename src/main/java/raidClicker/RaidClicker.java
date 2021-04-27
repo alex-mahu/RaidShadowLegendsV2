@@ -3,6 +3,7 @@ package raidClicker;
 import raidClicker.components.*;
 import raidClicker.contentPayloads.*;
 import raidClicker.contentPayloads.handlers.*;
+import raidClicker.listeners.SmartListener;
 import raidClicker.uniqueComponentHandlers.LocationHandler;
 
 import javax.swing.*;
@@ -24,6 +25,8 @@ public class RaidClicker {
     JLabel remainingTimeInSecondsLabel;
     LocationComponent locationComponent;
     LoadSaveSettingsComponent loadSaveSettingsComponent;
+    JCheckBox enableSmart;
+    JTextField numberOfRuns;
 
     public RaidClicker() {
         frame = new JFrame("Clicker");
@@ -40,24 +43,37 @@ public class RaidClicker {
         secondsToWaitUntilClick.setHorizontalAlignment(JTextField.CENTER);
         secondsToRun = new SecondsToRun();
         secondsToRun.setHorizontalAlignment(JTextField.CENTER);
-        startStop.addActionListener(new StartStopListener(secondsToWaitUntilClick, secondsToRun));
 
-        JPanel centerPanel = new JPanel();
+        JPanel centerPanelTop = new JPanel();
+        final GridLayout centerTopLayout = new GridLayout(0, 2);
+        centerPanelTop.setLayout(centerTopLayout);
+        enableSmart = new JCheckBox("", true);
+        enableSmart.addActionListener(new SmartListener());
+        centerPanelTop.add(new JLabel("Smart"), BorderLayout.WEST);
+        centerPanelTop.add(enableSmart, BorderLayout.EAST);
+        numberOfRuns = new JTextField("");
+        numberOfRuns.setHorizontalAlignment(JTextField.CENTER);
+        centerPanelTop.add(new JLabel("Runs:"));
+        centerPanelTop.add(numberOfRuns);
+        frame.add(centerPanelTop);
+
+
+        JPanel centerPanelBottom = new JPanel();
         final GridLayout inputLayouts = new GridLayout(0, 2);
         locationComponent = new LocationComponent();
         frame.add(locationComponent);
         LocationHandler.loadComponent(locationComponent);
 
-        centerPanel.setLayout(inputLayouts);
-        centerPanel.add(new JLabel("Click (sec):"), BorderLayout.EAST);
-        centerPanel.add(secondsToWaitUntilClick, BorderLayout.WEST);
+        centerPanelBottom.setLayout(inputLayouts);
+        centerPanelBottom.add(new JLabel("Click (sec):"), BorderLayout.EAST);
+        centerPanelBottom.add(secondsToWaitUntilClick, BorderLayout.WEST);
 
-        centerPanel.setLayout(inputLayouts);
-        centerPanel.add(new JLabel("Duration (sec):"), BorderLayout.EAST);
-        centerPanel.add(secondsToRun, BorderLayout.WEST);
-        centerPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        centerPanelBottom.setLayout(inputLayouts);
+        centerPanelBottom.add(new JLabel("Duration (sec):"), BorderLayout.EAST);
+        centerPanelBottom.add(secondsToRun, BorderLayout.WEST);
+        centerPanelBottom.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
-        frame.add(centerPanel, BorderLayout.CENTER);
+        frame.add(centerPanelBottom, BorderLayout.CENTER);
 
         JPanel runInformationPanel = new JPanel();
         final GridLayout informationLayouts = new GridLayout(0, 1);
@@ -77,6 +93,9 @@ public class RaidClicker {
         frame.setVisible(true);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        startStop.addActionListener(new StartStopListener(secondsToWaitUntilClick, secondsToRun, numberOfRuns));
+
         initializeUiHandlers();
 
         createSettingsFileIfNotExists();

@@ -33,7 +33,7 @@ public final class MouseLocationListener implements ActionListener, ResettableTi
             LocationHandler.setLocation(mouseActions.getMouseLocation());
             ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel("Took mouse location"));
             mouseLocationTimer.stop();
-            mouseActions.doubleClick();
+            mouseActions.click();
             clickingTimer.start();
         }
     }

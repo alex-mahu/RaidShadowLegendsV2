@@ -1,5 +1,6 @@
 package raidClicker.listeners;
 
+import raidClicker.ApplicationStatus;
 import raidClicker.MouseActions;
 import raidClicker.StartStopListener;
 import raidClicker.contentPayloads.*;
@@ -19,12 +20,13 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
     private final StartStopListener startStopListener;
     private final JTextField clickInSecondsJTF;
     private final JTextField runningTimeJTF;
-    int secondsPassed = 0;
-    String textWhenRunningIndefinitely;
+    private Integer secondsPassed = 0;
+    private String textWhenRunningIndefinitely;
     private Integer runningTime;
     private final Timer clickingTimer;
     private Integer clickInSeconds;
     private final MouseActions mouseActions;
+    private int clicksRemaining;
 
     public ClickingListener(
             Timer clickingTimer,
@@ -37,18 +39,19 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
         this.startStopListener = startStopListener;
         this.clickInSecondsJTF = clickInSecondsJTF;
         this.runningTimeJTF = runningTimeJTF;
+        clicksRemaining = ApplicationStatus.getNumberOfRuns();
         resetTimer();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         secondsPassed++;
-        if (isNull(runningTime) || isNull(textWhenRunningIndefinitely)) {
+        if ((isNull(runningTime) || isNull(textWhenRunningIndefinitely)) && (!ApplicationStatus.usesNumberOfRuns())) {
             textWhenRunningIndefinitely = "Running indefinitely.";
             ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel(textWhenRunningIndefinitely));
         } else {
-            if (secondsPassed == runningTime) {
-                ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel("Finished Running time"));
+            if ((ApplicationStatus.isSmart() && ApplicationStatus.usesNumberOfRuns() && clicksRemaining == 0) || (secondsPassed.equals(runningTime))) {
+                ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel("Finished Run"));
                 ComponentManager.addPayloadToConsume(new PayloadStartStopTextToChange(START));
                 ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel("Click START to run."));
                 startStopListener.changeRunningStatus();
@@ -57,18 +60,38 @@ public final class ClickingListener implements ActionListener, ResettableTimerLi
                 ComponentManager.addPayloadToConsume(new PayloadMusic(MUSHROOM));
                 return;
             } else {
-                ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel(format("%d seconds until stop", runningTime - secondsPassed)));
+                if (ApplicationStatus.usesNumberOfRuns()) {
+                    ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel(format("%d runs until stop", clicksRemaining)));
+                } else {
+                    ComponentManager.addPayloadToConsume(new PayloadSecondsToRunLabel(format("%d seconds until stop", runningTime - secondsPassed)));
+                }
             }
         }
 
         int secondsToClick = (secondsPassed % clickInSeconds);
 
         if (secondsToClick == 0) {
-            ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(">>>CLICKED<<<"));
-            mouseActions.doubleClick();
+            if (!ApplicationStatus.isSmart()) {
+                performClick();
+                return;
+            }
+
+            if (mouseActions.shouldPerformClick()) {
+                performClick();
+                if (ApplicationStatus.usesNumberOfRuns()) {
+                    clicksRemaining--;
+                }
+            } else {
+                ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(">>>SKIP<<<"));
+            }
         } else {
             ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(format("Next click: %d sec", (clickInSeconds - secondsToClick))));
         }
+    }
+
+    private void performClick() {
+        ComponentManager.addPayloadToConsume(new PayloadSecondsToClickLabel(">>>CLICKED<<<"));
+        mouseActions.click();
     }
 
     @Override
