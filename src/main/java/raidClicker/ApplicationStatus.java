@@ -27,7 +27,6 @@ public final class ApplicationStatus {
     }
 
     public static boolean usesNumberOfRuns() {
-        System.out.println("ZZZ" + (numberOfRuns > 0));
         return numberOfRuns > 0;
     }
 }
